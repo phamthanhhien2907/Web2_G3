@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href=".././static/style.css">
+    <link rel="stylesheet" href=".././static/css/addUser.css">
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/css/addUser.css}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <p class="logo"><a href="#">User Information</a></p>
+        <ul class="navbar">
+          <li>
+            <a href="/user">User list</a>
+          </li>
+          <li>
+            <a href="/addUser">Add user</a>
+          </li>
+        </ul>
+      </div>
+      <div class="content">
+        <h1 class="title">Add User</h1>
+        <form class="form_control" th:action="@{/addUser}" th:object="${user}" method="POST">
+            <label class="form_label">
+              First Name:
+              <input class="form_input" type="text" th:field="*{firstName}"/>
+            </label>
+            <br/>
+            <label class="form_label">
+              Last Name:
+              <input class="form_input" type="text" th:field="*{lastName}"/>
+            </label>
+            <br/>
+            <label class="form_label">
+              Company ID:
+              <input class="form_input" type="text" th:field="*{company}"/>
+            </label>
+            <br/>
+            <input class="form_submit" type="submit" value="Create"/>
+        </form>
+      </div>
+    </div>
+  <a href="/user">Quay lại</a>
+  </body>
+</html>

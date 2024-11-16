@@ -1,0 +1,42 @@
+/*css for user.html*/
+
+/**/
+table {
+    width: 60%;
+    height: auto;
+    margin: 0;
+    border: 1px solid black;
+}
+table thead tr th {
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: large;
+}
+table thead tr .action{
+    width: 100px;
+}
+
+table tbody tr td {
+    border: 1px solid black;
+    text-align: center;
+}
+table tbody tr .action{
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+table tbody tr td .icon_action{
+    width: 20px;
+    height: 20px;
+}
+table tbody tr td .icon_action:hover{
+    background: rgba(208, 208, 208, 0.75);
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+}

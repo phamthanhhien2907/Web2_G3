@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>User Demo</title>
+    <link rel="stylesheet" href=".././static/style.css">
+    <link rel="stylesheet" href=".././static/css/user.css">
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <p class="logo"><a href="#">User Information</a></p>
+            <ul class="navbar">
+                <li>
+                    <a href="/company">Company list</a>
+                </li>
+                <li>
+                    <a href="/addUser">Add user</a>
+                </li>
+                <li>
+                    <a href="/addCompany">Add company</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1 class="title">User Demo List</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Company</th>
+                    <th class="action">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${userDemo}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.firstName}"></td>
+                    <td th:text="${user.lastName}"></td>
+                    <td th:text="${user.company != null ? user.company.companyName : 'No Company'}"></td>
+                    <td class="action">
+                        <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
+                        <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

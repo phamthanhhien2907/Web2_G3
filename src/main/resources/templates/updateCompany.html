@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update company</title>
+<!--    <link rel="stylesheet" href="../static/style.css">-->
+<!--    <link rel="stylesheet" href="../static/css/addUser.css">-->
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/css/addUser.css}">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <p class="logo"><a href="#">User Information</a></p>
+        <ul class="navbar">
+            <li>
+                <a href="/company">Company list</a>
+            </li>
+            <li>
+                <a href="/addUser">Add user</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1 class="title">Update Company</h1>
+        <form class="form_control" th:action="@{/updateCompany/{id}(id=${company.id})}" th:object="${company}" method="POST">
+            <label class="form_label">
+                Company Name:
+                <input class="form_input" type="text" id="companyName" th:field="*{companyName}"/>
+            </label>
+            <br/>
+            <input class="form_submit" type="submit" value="Create"/>
+        </form>
+    </div>
+</div>
+<a href="/company">Quay lại</a>
+</body>
+</html>
