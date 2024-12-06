@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update company</title>
+    <!--    <link rel="stylesheet" href="../static/style.css">-->
+    <!--    <link rel="stylesheet" href="../static/css/addUser.css">-->
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/css/addUser.css}">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <p class="logo"><a href="#">User Information</a></p>
+        <ul class="navbar">
+            <li>
+                <a href="/company">Company list</a>
+            </li>
+            <li>
+                <a href="/addUser">Add user</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1 class="title">Update User</h1>
+        <form class="form_control" th:action="@{/updateUser/{id}(id=${user.id})}" th:object="${user}" method="POST">
+            <label class="form_label" style="padding-bottom: 20px">
+                Username:
+                <input class="form_input" type="text" id="firstName" th:field="*{firstName}"/>
+            </label>
+
+            <label class="form_label">
+                LastName:
+                <input class="form_input" type="text" id="lastName" th:field="*{lastName}"/>
+            </label>
+            <br/>
+            <label class="form_label">
+                Company ID:
+                <input class="form_input" type="text" th:field="*{company}"/>
+            </label>
+
+            <br/>
+            <input class="form_submit" type="submit" value="Update"/>
+        </form>
+    </div>
+</div>
+<a href="/company">Quay lại</a>
+</body>
+</html>

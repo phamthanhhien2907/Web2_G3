@@ -1,25 +1,23 @@
 package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
 @Entity
-@Table(name = "company")
-public class Company {
+@Table(name = "role")
+public class Role {
     @Id()
-    @Column(name = "company_id")
+    @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "company_name")
-    private String companyName;
-    @JsonIgnore
-    @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JsonBackReference
+    @Column
+    private String role;
 
+    @ManyToMany(mappedBy = "role", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonBackReference
 
 //    @JsonManagedReference
     private List<UserDemo> users;
@@ -32,12 +30,12 @@ public class Company {
         this.id = id;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getRole() {
+        return role;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<UserDemo> getUsers() {
@@ -50,9 +48,9 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{" +
+        return "Role{" +
                 "id=" + id +
-                ", companyName='" + companyName + '\'' +
+                ", role='" + role + '\'' +
                 ", users=" + users +
                 '}';
     }

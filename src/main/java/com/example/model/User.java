@@ -1,6 +1,7 @@
 package com.example.model;
 
 public class User {
+    int id;
     String firstName;
     String lastName;
 
@@ -18,5 +19,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

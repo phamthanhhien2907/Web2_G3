@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.model.Company;
 import com.example.model.UserDemo;
+import com.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.repository.CompanyRepository;
@@ -12,6 +13,8 @@ public class CompanyService {
 
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public void saveOrUpdate(Company company) {
         companyRepository.save(company);
@@ -33,6 +36,7 @@ public class CompanyService {
             for (UserDemo user : company.getUsers()) {
                 user.setCompany(null); // Hủy liên kết giữa UserDemo và Company
             }
+
         }
         companyRepository.deleteById(id);
     }

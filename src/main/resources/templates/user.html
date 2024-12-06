@@ -43,8 +43,12 @@
                     <td th:text="${user.lastName}"></td>
                     <td th:text="${user.company != null ? user.company.companyName : 'No Company'}"></td>
                     <td class="action">
-                        <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
-                        <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
+                        <a th:href="@{/deleteUser/{id}(id=${user.id})}">
+                            <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
+                        </a>
+                        <a th:href="@{/updateUser/{id}(id=${user.id})}">
+                            <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
+                        </a>
                     </td>
                 </tr>
                 </tbody>
