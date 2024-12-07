@@ -1,3 +1,79 @@
+<style>
+    /* Reset mặc định */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    form {
+        background: #fff;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+        text-align: left;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    div {
+        margin-bottom: 15px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        form {
+            padding: 15px 20px;
+        }
+    }
+</style>
 <form th:action="@{/register}" method="post" th:object="${userDemo}">
     <div>
         <label for="email">Email:</label>
@@ -8,7 +84,8 @@
         <input type="password" id="password" name="password" required />
     </div>
     <div>
-        <button type="submit">Register</button>
+        <input type="submit" value="Sign Up" />
+<!--        <input type="submit"> />-->
     </div>
     <div th:if="${error}" class="error">
         <p th:text="${error}"></p>

@@ -27,11 +27,11 @@ public class UserDemo {
     @Column
     private String password;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = true, referencedColumnName = "company_id")
     private Company company;
-//    @JsonManagedReference
+    @JsonManagedReference
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)

@@ -1,17 +1,17 @@
 package com.example.controller;
 
 import com.example.model.Company;
+import com.example.model.UserDemo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import com.example.service.CompanyService;
 
 import java.util.List;
 
-@Controller()
+@RestController()
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -59,5 +59,36 @@ public class CompanyController {
     public String deleteCompany(@PathVariable int id) {
         companyService.deleteCompanyById(id);
         return "redirect:/company";
+    }
+    @GetMapping("/api/company")
+    public List<Company> companies() {
+        List<Company> companies = companyService.getAllCompanies();
+        return companies;
+    }
+    @PostMapping("/api/addNewCompany")
+    @ResponseBody
+    public ResponseEntity<Company> saveUser(@RequestBody Company company) {
+        companyService.saveOrUpdate(company);
+        return ResponseEntity.ok(company);
+    }
+    @PutMapping("/api/updateCompany/{id}")
+    @ResponseBody
+    public ResponseEntity<String> update(@PathVariable int id, @RequestBody Company company) {
+        Company companyExisting = companyService.getCompanyById(id);
+        if(companyExisting == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id not found");
+        }
+        companyExisting.setCompanyName(company.getCompanyName());
+        companyService.saveOrUpdate(companyExisting);
+        return ResponseEntity.ok("User with ID " + id + " successfully updated");
+    }
+    @DeleteMapping("/api/deleteCompany/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) {
+        Company company = companyService.getCompanyById(id);
+        if(company == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id not found");
+        }
+        companyService.deleteCompanyById(id);
+        return ResponseEntity.ok("User successfully deleted");
     }
 }

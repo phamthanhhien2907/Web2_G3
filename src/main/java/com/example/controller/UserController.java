@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.Company;
 import com.example.model.User;
 import com.example.model.UserDemo;
+import com.example.service.CompanyService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,34 +23,37 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    private final CompanyService companyService;
+
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, CompanyService companyService) {
         this.userService = userService;
+        this.companyService = companyService;
     }
 
     @GetMapping("/user")
     public String trangChiTiet(@ModelAttribute("userName") String userName, HttpSession session, Model model) {
-//        List<UserDemo> list = userService.getAllUser();
-//        model.addAttribute("userDemo", list);
-//        return "user";
-        Integer currentUserId = (Integer) session.getAttribute("currentUserId");
-
-        if (currentUserId != null) {
-            List<UserDemo> allUsers = userService.getAllUser();
-
-            List<UserDemo> filteredUsers = allUsers.stream()
-                    .filter(user -> !user.getId().equals(currentUserId))
-                    .collect(Collectors.toList());
-            model.addAttribute("userDemo", filteredUsers);
-        } else {
-            model.addAttribute("message", "No user logged in");
-        }
-
+        List<UserDemo> list = userService.getAllUser();
+        model.addAttribute("userDemo", list);
         return "user";
+//        Integer currentUserId = (Integer) session.getAttribute("currentUserId");
+//
+//        if (currentUserId != null) {
+//            List<UserDemo> allUsers = userService.getAllUser();
+//
+//            List<UserDemo> filteredUsers = allUsers.stream()
+//                    .filter(user -> !user.getId().equals(currentUserId))
+//                    .collect(Collectors.toList());
+//            model.addAttribute("userDemo", filteredUsers);
+//        } else {
+//            model.addAttribute("message", "No user logged in");
+//        }
+//
+//        return "user";
     }
 
     @GetMapping("/addUser")
@@ -98,6 +102,7 @@ public class UserController {
         String fullName = user.getFirstName() + " " + user.getLastName();
         System.out.println("Full Name: " + fullName);
         user.setPassword(passwordEncoder().encode(user.getPassword()));
+        user.setCompany(user.getCompany());
         userService.saveOrUpdate(user);
         return ResponseEntity.ok(user);
     }
@@ -108,7 +113,6 @@ public class UserController {
         if(userExisting == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id not found");
         }
-        userExisting.setId(user.getId());
         userExisting.setFirstName(user.getFirstName());
         userExisting.setLastName(user.getLastName());
         userExisting.setEmail(user.getEmail());
@@ -126,4 +130,5 @@ public class UserController {
         userService.deleteUserById(id);
         return ResponseEntity.ok("User successfully deleted");
     }
+
 }
