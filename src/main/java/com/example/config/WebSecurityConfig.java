@@ -1,10 +1,13 @@
 package com.example.config;
+import com.example.jwtAuthFilter.JwtAuthFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,12 +16,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
-
+    @Autowired
+    private JwtAuthFilter authFilter;
 //    @Bean
 //    protected UserDetailsService userDetailsService() {
 //        UserDetails user = User.builder()
@@ -72,10 +76,14 @@ public class WebSecurityConfig {
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()
                                 .requestMatchers("/login").permitAll()
+                                .requestMatchers("/api/generateToken").permitAll()
                                 .requestMatchers("/register").permitAll()
                                 .requestMatchers("/addUser").hasAnyAuthority("USER", "ADMIN")
                                 .anyRequest().authenticated()
+                ).sessionManagement(sess -> sess
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
