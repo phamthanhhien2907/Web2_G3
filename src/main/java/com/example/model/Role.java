@@ -1,6 +1,7 @@
 package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -15,11 +16,11 @@ public class Role {
 
     @Column
     private String role;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "role", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonBackReference
+//    @JsonBackReference
 
-//    @JsonManagedReference
+
     private List<UserDemo> users;
 
     public int getId() {

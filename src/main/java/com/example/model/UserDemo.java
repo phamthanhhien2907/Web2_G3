@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
-
 @Entity
 @Table(name = "user_demo")
 public class UserDemo {
@@ -27,11 +26,11 @@ public class UserDemo {
     @Column
     private String password;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = true, referencedColumnName = "company_id")
     private Company company;
-    @JsonManagedReference
+//    @JsonManagedReference
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -106,7 +105,6 @@ public class UserDemo {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", role=" + role +
                 '}';
     }
 }

@@ -1,9 +1,11 @@
 package com.example.controller;
 
 import com.example.model.Company;
+import com.example.model.Role;
 import com.example.model.User;
 import com.example.model.UserDemo;
 import com.example.service.CompanyService;
+import com.example.service.RoleService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +18,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.service.UserService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController()
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     private final UserService userService;
     private final CompanyService companyService;
+    private final RoleService roleService;
 
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
-    public UserController(UserService userService, CompanyService companyService) {
+    public UserController(UserService userService, CompanyService companyService, RoleService roleService) {
         this.userService = userService;
         this.companyService = companyService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/user")
@@ -103,6 +109,14 @@ public class UserController {
         System.out.println("Full Name: " + fullName);
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         user.setCompany(user.getCompany());
+        Role userRole = roleService.findByRole("ADMIN"); // Find the "ROLE_USER"
+        if (userRole == null) {
+            userRole = new Role();
+            userRole.setRole("ADMIN");  // Create "ROLE_USER" if it doesn't exist
+            roleService.save(userRole);  // Save the role if it's new
+        }
+
+        user.setRole(Set.of(userRole));
         userService.saveOrUpdate(user);
         return ResponseEntity.ok(user);
     }

@@ -16,12 +16,11 @@ public class Company {
 
     @Column(name = "company_name")
     private String companyName;
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonBackReference
+//    @JsonBackReference
 
 
-//    @JsonManagedReference
     private List<UserDemo> users;
 
     public int getId() {
