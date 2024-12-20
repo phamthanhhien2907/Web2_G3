@@ -22,7 +22,6 @@ public class UserDetailsServiceIml implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserDemo user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
-        System.out.println("user" + user);
 
         boolean enabled = true;
         boolean accountNonExpired = true;

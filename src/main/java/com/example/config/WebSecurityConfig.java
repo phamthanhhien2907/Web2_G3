@@ -62,7 +62,6 @@ public class WebSecurityConfig {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-
         return new ProviderManager(authenticationProvider);
     }
 
@@ -91,7 +90,7 @@ public class WebSecurityConfig {
 //                                .requestMatchers("/api/deleteCompany/{id}").permitAll()
 //                                .requestMatchers("/api/company").permitAll()
 //                                .requestMatchers("/").permitAll()
-//                                .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
 //                                .requestMatchers("/login").permitAll()
                                 .requestMatchers("/api/generateToken").permitAll()
 //                                .requestMatchers("/register").permitAll()
@@ -107,9 +106,9 @@ public class WebSecurityConfig {
 //                        .permitAll())
 //                .logout(config -> config
 //                        .logoutSuccessUrl("/login"))
-//                .headers(headers -> headers
-//                        .frameOptions().sameOrigin()  // Cho phép iframe từ cùng một origin
-//                )
+                .headers(headers -> headers
+                        .frameOptions().sameOrigin()  // Cho phép iframe từ cùng một origin
+                )
                 .build();
     }
 }

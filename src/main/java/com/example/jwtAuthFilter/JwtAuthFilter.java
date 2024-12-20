@@ -33,12 +33,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        // Check if the header starts with "Bearer "
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // Extract token
-            username = jwtService.extractUsername(token); // Extract username from token
-
+            try {
+                // Lấy username từ token
+                username = jwtService.extractUsername(token);
+                System.out.println("username: " + username);
+                System.out.println("token: " + token);
+                System.out.println("Bearer: " + authHeader.startsWith("Bearer "));
+            } catch (Exception e) {
+                // Nếu có lỗi trong việc lấy username từ token
+                System.out.println("Invalid token or failed to extract username.");
+            }
         }
+
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 //            if (request.getRequestURI().startsWith("/api/generateToken")) {
@@ -46,7 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 //                return;
 //            }
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
+            System.out.println("userDetails: " + userDetails);
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -55,6 +63,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Authentication set: " + SecurityContextHolder.getContext().getAuthentication());
             }
         }
 //        if (request.getRequestURI().equals("/api/generateToken")) {

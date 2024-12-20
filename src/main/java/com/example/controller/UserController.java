@@ -4,11 +4,18 @@ import com.example.model.Company;
 import com.example.model.Role;
 import com.example.model.User;
 import com.example.model.UserDemo;
+import com.example.repository.UserRepository;
+import com.example.security.JwtService;
 import com.example.service.CompanyService;
 import com.example.service.RoleService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -29,16 +36,22 @@ public class UserController {
     private final UserService userService;
     private final CompanyService companyService;
     private final RoleService roleService;
+    private final UserRepository userRepository;
+    private final ProviderManager authenticationManager;
+    private final JwtService jwtService;
 
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
-    public UserController(UserService userService, CompanyService companyService, RoleService roleService) {
+    public UserController(UserService userService, CompanyService companyService, RoleService roleService, UserRepository userRepository, ProviderManager authenticationManager, JwtService jwtService) {
         this.userService = userService;
         this.companyService = companyService;
         this.roleService = roleService;
+        this.userRepository = userRepository;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @GetMapping("/user")
@@ -96,8 +109,33 @@ public class UserController {
     }
 
     // resApi
+
+    @GetMapping("/api/get-current")
+    public ResponseEntity<?> getCurrentUser() {
+        // Lấy thông tin Authentication từ SecurityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() ||
+                authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+        }
+
+        // Lấy thông tin email của người dùng
+        String email = authentication.getName();
+        System.out.println("Current User Email: " + email);
+
+        // Lấy thông tin chi tiết của user từ database
+        UserDemo user = userService.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Trả về thông tin user
+        return ResponseEntity.ok(user);
+    }
+
     @GetMapping("/api/users")
-    public List<UserDemo> users() {
+    public List<UserDemo> getUserDetail() {
         List<UserDemo> users = userService.getAllUser();
         return users;
     }

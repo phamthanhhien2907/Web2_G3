@@ -78,6 +78,4 @@ public class RegisterController {
         userService.saveOrUpdate(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
-
-
 }
